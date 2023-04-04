@@ -55,6 +55,9 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
         resultList.addAll(showFilter);
       });
     }
+    setState(() {
+      resultList = showFilter;
+    });
   }
 
   searchResult() {
