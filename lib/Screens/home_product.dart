@@ -43,7 +43,19 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
     print(_searchTextController.text.trim());
   }
 
-  filterShirt() {}
+  filterShirt() {
+    List<ProductModel> showFilter = [];
+    for (var element in productList) {
+      if (element.product_type == "Shirt") {
+        showFilter.add(element);
+        print(showFilter);
+      }
+      setState(() {
+        resultList.clear();
+        resultList.addAll(showFilter);
+      });
+    }
+  }
 
   searchResult() {
     List<ProductModel> showResult = [];
