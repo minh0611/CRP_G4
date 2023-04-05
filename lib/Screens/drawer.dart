@@ -97,7 +97,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                 return (const Text("Loading... Please wait"));
                               } else {
                                 return Text(
-                                  " $uFullname" ?? "GUEST",
+                                  " $uFullname",
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 15,

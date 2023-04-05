@@ -16,6 +16,7 @@ class HomeNewScreen extends StatefulWidget {
 
 class _HomeNewScreenState extends State<HomeNewScreen> {
   List<NewModel> newList = [];
+  List<NewModel> resultList = [];
   @override
   void initState() {
     super.initState();
@@ -23,6 +24,7 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
   }
 
   getNew() async {
+    List<NewModel> showFilter = [];
     var data = await FirebaseFirestore.instance.collection('news').get();
     setState(() {
       newList = data.docs
@@ -30,6 +32,83 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
             (doc) => NewModel.fromMap(doc.data()),
           )
           .toList();
+    });
+    filterAll();
+  }
+
+  filterFlashSales() {
+    List<NewModel> showFilter = [];
+    for (var element in newList) {
+      if (element.new_type == "flash_sales") {
+        showFilter.add(element);
+        print(showFilter);
+      }
+      setState(() {
+        resultList.clear();
+        resultList.addAll(showFilter);
+      });
+    }
+    setState(() {
+      resultList = showFilter;
+    });
+  }
+
+  filterNewArrive() {
+    List<NewModel> showFilter = [];
+    for (var element in newList) {
+      if (element.new_type == "new_arrives") {
+        showFilter.add(element);
+        print(showFilter);
+      }
+      setState(() {
+        resultList.clear();
+        resultList.addAll(showFilter);
+      });
+    }
+    setState(() {
+      resultList = showFilter;
+    });
+  }
+
+  filterBestProduct() {
+    List<NewModel> showFilter = [];
+    for (var element in newList) {
+      if (element.new_type == "best_product") {
+        showFilter.add(element);
+        print(showFilter);
+      }
+      setState(() {
+        resultList.clear();
+        resultList.addAll(showFilter);
+      });
+    }
+    setState(() {
+      resultList = showFilter;
+    });
+  }
+
+  filterMonthlySales() {
+    List<NewModel> showFilter = [];
+    for (var element in newList) {
+      if (element.new_type == "monthly_sales") {
+        showFilter.add(element);
+        print(showFilter);
+      }
+      setState(() {
+        resultList.clear();
+        resultList.addAll(showFilter);
+      });
+    }
+    setState(() {
+      resultList = showFilter;
+    });
+  }
+
+  filterAll() {
+    List<NewModel> showFilter = [];
+    showFilter = List<NewModel>.from(newList);
+    setState(() {
+      resultList = showFilter;
     });
   }
 
@@ -62,19 +141,37 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
                       maxCrossAxisExtent: 200,
                       childAspectRatio: 1.2,
                     ),
-                    children: const [
-                      CategoryIcon(
-                          iconImage: 'assets/icon_images/flash_sales.png',
-                          categoryName: "Flash Sales"),
-                      CategoryIcon(
-                          iconImage: 'assets/icon_images/newArrive.png',
-                          categoryName: "New Arrives"),
-                      CategoryIcon(
-                          iconImage: 'assets/icon_images/bestProduct.png',
-                          categoryName: "Best Product"),
-                      CategoryIcon(
-                          iconImage: 'assets/icon_images/sale.png',
-                          categoryName: "Monthly Sales"),
+                    children: [
+                      InkWell(
+                        onTap: () => filterAll(),
+                        child: const CategoryIcon(
+                            iconImage: 'assets/icon_images/allNew.png',
+                            categoryName: "All News"),
+                      ),
+                      InkWell(
+                        onTap: () => filterFlashSales(),
+                        child: const CategoryIcon(
+                            iconImage: 'assets/icon_images/flash_sales.png',
+                            categoryName: "Flash Sales"),
+                      ),
+                      InkWell(
+                        onTap: () => filterNewArrive(),
+                        child: const CategoryIcon(
+                            iconImage: 'assets/icon_images/newArrive.png',
+                            categoryName: "New Arrives"),
+                      ),
+                      InkWell(
+                        onTap: () => filterBestProduct(),
+                        child: const CategoryIcon(
+                            iconImage: 'assets/icon_images/bestProduct.png',
+                            categoryName: "Best Product"),
+                      ),
+                      InkWell(
+                        onTap: () => filterMonthlySales(),
+                        child: const CategoryIcon(
+                            iconImage: 'assets/icon_images/sale.png',
+                            categoryName: "Monthly Sales"),
+                      ),
                     ]),
               )),
           const SizedBox(
@@ -91,7 +188,7 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 1, childAspectRatio: 2.5),
-                  itemCount: newList.length,
+                  itemCount: resultList.length,
                   itemBuilder: (BuildContext context, int index) =>
                       buildNewCard(context, index)))
         ],
@@ -106,13 +203,13 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
             context,
             MaterialPageRoute(
                 builder: (context) => NewDetailScreen(
-                      newModel: newList[index],
+                      newModel: resultList[index],
                     )));
       },
       child: NewContainer(
-          image: newList[index].new_img,
-          newSummary: newList[index].new_subtitle,
-          newTitle: newList[index].new_title),
+          image: resultList[index].new_img,
+          newSummary: resultList[index].new_subtitle,
+          newTitle: resultList[index].new_title),
     );
   }
 }

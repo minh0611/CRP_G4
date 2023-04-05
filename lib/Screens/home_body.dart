@@ -95,11 +95,21 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
           ),
           Expanded(
             child: GridView.builder(
+                scrollDirection: Axis.horizontal,
                 itemCount: bestProductList.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 0.55),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 450,
+                  childAspectRatio: 2,
+                ),
                 itemBuilder: (BuildContext context, int index) =>
                     buildProductCard(context, index)),
+          ),
+          const Text(
+            'Recent News',
+            style: TextStyle(
+              color: Colors.amber,
+              fontSize: 20,
+            ),
           ),
         ],
       ),
