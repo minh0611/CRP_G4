@@ -38,6 +38,7 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
           .toList();
     });
     // print('result: $bestProductList');
+    filterBestProduct();
   }
 
   filterBestProduct() async {
@@ -94,7 +95,7 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
           ),
           Expanded(
             child: GridView.builder(
-                itemCount: productList.length,
+                itemCount: bestProductList.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2, childAspectRatio: 0.55),
                 itemBuilder: (BuildContext context, int index) =>
@@ -133,7 +134,7 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
                     image: DecorationImage(
                       fit: BoxFit.contain,
                       image: NetworkImage(
-                        productList[index].product_img,
+                        bestProductList[index].product_img,
                       ),
                     ),
                   ),
@@ -154,14 +155,14 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ProductDetailScreen(
-                              productModel: productList[index],
+                              productModel: bestProductList[index],
                             )));
               },
               child: Expanded(
                 flex: 2,
                 child: Center(
                   child: Text(
-                    productList[index].product_name,
+                    bestProductList[index].product_name,
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -174,7 +175,7 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
             Expanded(
               flex: 1,
               child: Text(
-                '\$ ${productList[index].product_price}',
+                '\$ ${bestProductList[index].product_price}',
                 style: const TextStyle(fontSize: 18),
               ),
             ),
@@ -194,7 +195,7 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
                       onPressed: null,
                       child: const Text('Add to cart'),
                     ),
-                    Text('Sold: ${productList[index].product_sales}'),
+                    Text('Sold: ${bestProductList[index].product_sales}'),
                   ],
                 ),
               ),
