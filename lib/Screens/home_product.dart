@@ -60,6 +60,63 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
     });
   }
 
+  filterShoes() {
+    List<ProductModel> showFilter = [];
+    for (var element in productList) {
+      if (element.product_type == "Shoes") {
+        showFilter.add(element);
+        print(showFilter);
+      }
+      setState(() {
+        resultList.clear();
+        resultList.addAll(showFilter);
+      });
+    }
+    setState(() {
+      resultList = showFilter;
+    });
+  }
+
+  filterShort() {
+    List<ProductModel> showFilter = [];
+    for (var element in productList) {
+      if (element.product_type == "Short") {
+        showFilter.add(element);
+        print(showFilter);
+      }
+      setState(() {
+        resultList.clear();
+        resultList.addAll(showFilter);
+      });
+    }
+    setState(() {
+      resultList = showFilter;
+    });
+  }
+
+  filterEquipment() {
+    List<ProductModel> showFilter = [];
+    for (var element in productList) {
+      if (element.product_type == "Equipment") {
+        showFilter.add(element);
+        print(showFilter);
+      }
+      setState(() {
+        resultList.clear();
+        resultList.addAll(showFilter);
+      });
+    }
+    setState(() {
+      resultList = showFilter;
+    });
+  }
+
+  filterAll() {
+    setState(() {
+      getProduct();
+    });
+  }
+
   searchResult() {
     List<ProductModel> showResult = [];
     // ignore: unused_local_variable
@@ -110,19 +167,37 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                     maxCrossAxisExtent: 200,
                     childAspectRatio: 1.2,
                   ),
-                  children: const [
-                    CategoryIcon(
-                        iconImage: 'assets/icon_images/shirt.png',
-                        categoryName: "Shirt"),
-                    CategoryIcon(
-                        iconImage: 'assets/icon_images/short.png',
-                        categoryName: "Short"),
-                    CategoryIcon(
-                        iconImage: 'assets/icon_images/shoes.png',
-                        categoryName: "Shoe"),
-                    CategoryIcon(
-                        iconImage: 'assets/icon_images/equipment.png',
-                        categoryName: "Equipment"),
+                  children: [
+                    InkWell(
+                      onTap: () => filterAll(),
+                      child: const CategoryIcon(
+                          iconImage: 'assets/icon_images/allProduct.png',
+                          categoryName: "All Product"),
+                    ),
+                    InkWell(
+                      onTap: () => filterShirt(),
+                      child: const CategoryIcon(
+                          iconImage: 'assets/icon_images/shirt.png',
+                          categoryName: "Shirt"),
+                    ),
+                    InkWell(
+                      onTap: () => filterShort(),
+                      child: const CategoryIcon(
+                          iconImage: 'assets/icon_images/short.png',
+                          categoryName: "Short"),
+                    ),
+                    InkWell(
+                      onTap: () => filterShoes(),
+                      child: const CategoryIcon(
+                          iconImage: 'assets/icon_images/shoes.png',
+                          categoryName: "Shoes"),
+                    ),
+                    InkWell(
+                      onTap: () => filterEquipment(),
+                      child: const CategoryIcon(
+                          iconImage: 'assets/icon_images/equipment.png',
+                          categoryName: "Equipment"),
+                    ),
                   ]),
             )),
         Container(

@@ -20,6 +20,8 @@ class HomeBodyScreen extends StatefulWidget {
 
 class _HomeBodyScreenState extends State<HomeBodyScreen> {
   List<ProductModel> productList = [];
+  List<ProductModel> bestProductList = [];
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +36,24 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
             (doc) => ProductModel.fromMap(doc.data()),
           )
           .toList();
+    });
+    // print('result: $bestProductList');
+  }
+
+  filterBestProduct() async {
+    List<ProductModel> showFilter = [];
+    for (var element in productList) {
+      if (element.product_sales > 50) {
+        showFilter.add(element);
+      }
+      setState(() {
+        bestProductList.clear();
+        bestProductList.addAll(showFilter);
+        print('result: $bestProductList');
+      });
+    }
+    setState(() {
+      bestProductList = showFilter;
     });
   }
 

@@ -15,6 +15,24 @@ class HomeNewScreen extends StatefulWidget {
 }
 
 class _HomeNewScreenState extends State<HomeNewScreen> {
+  List<NewModel> newList = [];
+  @override
+  void initState() {
+    super.initState();
+    getNew();
+  }
+
+  getNew() async {
+    var data = await FirebaseFirestore.instance.collection('news').get();
+    setState(() {
+      newList = data.docs
+          .map(
+            (doc) => NewModel.fromMap(doc.data()),
+          )
+          .toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -70,45 +88,31 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
             ),
           ),
           Expanded(
-              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance.collection('news').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<NewModel> myList = snapshot.data!.docs
-                    .map(
-                      (doc) => NewModel.fromMap(doc.data()),
-                    )
-                    .toList();
-                print(myList);
-                return GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 1, childAspectRatio: 2.5),
-                    itemCount: snapshot.data?.docs.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      DocumentSnapshot document = snapshot.data!.docs[index];
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => NewDetailScreen(
-                                        newModel: myList[index],
-                                      )));
-                        },
-                        child: NewContainer(
-                            image: myList[index].new_img,
-                            newSummary: myList[index].new_subtitle,
-                            newTitle: myList[index].new_title),
-                      );
-                    });
-              } else {
-                return Container();
-              }
-            },
-          ))
+              child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1, childAspectRatio: 2.5),
+                  itemCount: newList.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      buildNewCard(context, index)))
         ],
       ),
+    );
+  }
+
+  Widget buildNewCard(BuildContext context, int index) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => NewDetailScreen(
+                      newModel: newList[index],
+                    )));
+      },
+      child: NewContainer(
+          image: newList[index].new_img,
+          newSummary: newList[index].new_subtitle,
+          newTitle: newList[index].new_title),
     );
   }
 }
