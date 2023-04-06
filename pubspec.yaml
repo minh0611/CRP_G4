@@ -48,6 +48,7 @@ dependencies:
   vibration: ^1.7.6
   font_awesome_flutter: ^10.4.0
   expandable: ^5.0.1
+  url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_test:

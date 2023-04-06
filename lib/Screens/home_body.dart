@@ -1,15 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_authfb_demo/Screens/newDetail.dart';
 import 'package:flutter_authfb_demo/Screens/productDetail.dart';
+import 'package:flutter_authfb_demo/models/new_model.dart';
+import 'package:flutter_authfb_demo/widgets/new_container.dart';
 
 import '../models/product_model.dart';
-
-final List<String> imgList = [
-  'assets/images/banner.jpeg',
-  'assets/images/banner2.jpeg',
-  'assets/images/banner4.jpeg',
-];
 
 class HomeBodyScreen extends StatefulWidget {
   const HomeBodyScreen({super.key});
@@ -19,26 +17,40 @@ class HomeBodyScreen extends StatefulWidget {
 }
 
 class _HomeBodyScreenState extends State<HomeBodyScreen> {
+  final List<String> imgList = [
+    'assets/images/banner.jpeg',
+    'assets/images/banner2.jpeg',
+    'assets/images/banner4.jpeg',
+  ];
   List<ProductModel> productList = [];
   List<ProductModel> bestProductList = [];
+  List<NewModel> newList = [];
+  List<NewModel> latestNewList = [];
 
   @override
   void initState() {
     super.initState();
-    getProduct();
+    getData();
   }
 
-  getProduct() async {
+  getData() async {
     var data = await FirebaseFirestore.instance.collection('product').get();
+    var data2 = await FirebaseFirestore.instance.collection('news').get();
     setState(() {
       productList = data.docs
           .map(
             (doc) => ProductModel.fromMap(doc.data()),
           )
           .toList();
+      newList = data2.docs
+          .map(
+            (doc) => NewModel.fromMap(doc.data()),
+          )
+          .toList();
     });
-    // print('result: $bestProductList');
     filterBestProduct();
+    filterLatestNew();
+    print(newList);
   }
 
   filterBestProduct() async {
@@ -50,11 +62,29 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
       setState(() {
         bestProductList.clear();
         bestProductList.addAll(showFilter);
-        print('result: $bestProductList');
+        // print('result: $bestProductList');
       });
     }
     setState(() {
       bestProductList = showFilter;
+    });
+  }
+
+  filterLatestNew() async {
+    List<NewModel> showFilterNew = [];
+    for (var element in newList) {
+      var time = element.new_publish_date.toDate();
+      if (time.isAfter(DateTime(2022, 5, 1, 0, 0))) {
+        showFilterNew.add(element);
+      }
+      setState(() {
+        latestNewList.clear();
+        latestNewList.addAll(showFilterNew);
+        print('time: $latestNewList');
+      });
+    }
+    setState(() {
+      latestNewList = showFilterNew;
     });
   }
 
@@ -64,53 +94,71 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
       padding: const EdgeInsets.all(10),
       child: Column(
         children: [
-          CarouselSlider(
-            items: imgList
-                .map((item) => Container(
-                      child: Center(
-                        child: Image.asset(
-                          item,
-                          fit: BoxFit.cover,
-                          width: 1000,
-                        ),
-                      ),
-                    ))
-                .toList(),
-            options: CarouselOptions(
-              autoPlay: true,
-              aspectRatio: 2.0,
-              enlargeCenterPage: true,
-              autoPlayInterval: const Duration(seconds: 5),
-            ),
-          ),
-          const Text(
-            "Top Sales ",
-            style: TextStyle(
-              color: Colors.amber,
-              fontSize: 20,
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
           Expanded(
-            child: GridView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: bestProductList.length,
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 450,
-                  childAspectRatio: 2,
+              child: ListView(
+            children: [
+              CarouselSlider(
+                items: imgList
+                    .map((item) => Center(
+                          child: Image.asset(
+                            item,
+                            fit: BoxFit.cover,
+                            width: 1000,
+                          ),
+                        ))
+                    .toList(),
+                options: CarouselOptions(
+                  autoPlay: true,
+                  aspectRatio: 2.0,
+                  enlargeCenterPage: true,
+                  autoPlayInterval: const Duration(seconds: 5),
                 ),
-                itemBuilder: (BuildContext context, int index) =>
-                    buildProductCard(context, index)),
-          ),
-          const Text(
-            'Recent News',
-            style: TextStyle(
-              color: Colors.amber,
-              fontSize: 20,
-            ),
-          ),
+              ),
+              const Center(
+                child: Text(
+                  "Top Sales ",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height,
+                child: GridView.builder(
+                    // scrollDirection: Axis.horizontal,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: bestProductList.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2, childAspectRatio: 0.5),
+                    itemBuilder: (BuildContext context, int index) =>
+                        buildProductCard(context, index)),
+              ),
+              const Center(
+                child: Text(
+                  "Latest New ",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 1, childAspectRatio: 2.5),
+                      itemCount: latestNewList.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          buildNewCard(context, index)))
+            ],
+          )),
         ],
       ),
     );
@@ -213,6 +261,23 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildNewCard(BuildContext context, int index) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => NewDetailScreen(
+                      newModel: latestNewList[index],
+                    )));
+      },
+      child: NewContainer(
+          image: latestNewList[index].new_img,
+          newSummary: latestNewList[index].new_subtitle,
+          newTitle: latestNewList[index].new_title),
     );
   }
 }

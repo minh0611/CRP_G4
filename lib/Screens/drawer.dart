@@ -15,6 +15,82 @@ class DrawerScreen extends StatefulWidget {
 
 class _DrawerScreenState extends State<DrawerScreen> {
   late String? uFullname;
+  Widget checkSignIn() {
+    var user = FirebaseAuth.instance.currentUser;
+    if (user!.isAnonymous) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'Please sign in for further access',
+            style: TextStyle(
+                color: Colors.amber, fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(children: const [
+            FaIcon(
+              FontAwesomeIcons.solidCircleUser,
+              color: Colors.grey,
+              size: 45,
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Text(
+              "Guess",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            )
+          ]),
+        ],
+      );
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'Welcome Back, ',
+            style: TextStyle(
+                color: Colors.amber, fontSize: 30, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              const FaIcon(
+                FontAwesomeIcons.solidCircleUser,
+                color: Colors.grey,
+                size: 45,
+              ),
+              const SizedBox(
+                width: 15,
+              ),
+              FutureBuilder(
+                  future: _fetch(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return (const Text("Loading... Please wait"));
+                    } else {
+                      return Text(
+                        " $uFullname",
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      );
+                    }
+                  }),
+            ],
+          ),
+        ],
+      );
+    }
+  }
 
   Future signOut() async {
     await FirebaseAuth.instance.signOut();
@@ -65,49 +141,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       bottomLeft: Radius.circular(70),
                       bottomRight: Radius.circular(70),
                     )),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Text(
-                      'Welcome Back, ',
-                      style: TextStyle(
-                          color: Colors.amber,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        const FaIcon(
-                          FontAwesomeIcons.solidCircleUser,
-                          color: Colors.grey,
-                          size: 45,
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        FutureBuilder(
-                            future: _fetch(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState !=
-                                  ConnectionState.done) {
-                                return (const Text("Loading... Please wait"));
-                              } else {
-                                return Text(
-                                  " $uFullname",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                );
-                              }
-                            }),
-                      ],
-                    ),
-                  ],
-                )),
+                child: checkSignIn()),
             Container(
               child: SizedBox(
                 width: 305,

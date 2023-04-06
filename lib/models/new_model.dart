@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class NewModel {
   final String new_content;
 
@@ -11,12 +13,15 @@ class NewModel {
 
   final String new_type;
 
+  final Timestamp new_publish_date;
+
   NewModel(
       {required this.new_content,
       required this.new_img,
       required this.new_subtitle,
       required this.new_title,
-      required this.new_type});
+      required this.new_type,
+      required this.new_publish_date});
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
@@ -26,6 +31,7 @@ class NewModel {
     result.addAll({'new_subtitle': new_subtitle});
     result.addAll({'new_title': new_title});
     result.addAll({'new_type': new_type});
+    result.addAll({'new_publish_date': new_publish_date});
 
     return result;
   }
@@ -36,7 +42,8 @@ class NewModel {
         new_img: map['new_img'] ?? '',
         new_subtitle: map['new_subtitle'] ?? '',
         new_title: map['new_title'] ?? '',
-        new_type: map['new_type'] ?? '');
+        new_type: map['new_type'] ?? '',
+        new_publish_date: map['new_publish_date'] ?? '');
   }
   String toJson() => json.encode(toMap());
 
