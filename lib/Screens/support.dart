@@ -67,7 +67,7 @@ class _SupportScreenState extends State<SupportScreen> {
               InkWell(
                 onTap: () => _launchCaller(),
                 child: const CategoryIcon(
-                    iconImage: 'assets/icon_images/shirt.png',
+                    iconImage: 'assets/icon_images/phoneIcon.png',
                     categoryName: "Call Support"),
               ),
             ],

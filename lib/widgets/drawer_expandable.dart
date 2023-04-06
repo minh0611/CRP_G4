@@ -59,23 +59,28 @@ class _DrawerExpandableState extends State<DrawerExpandable> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: const [
                             SizedBox(
-                              height: 5,
+                              height: 10,
                             ),
-                            Text("Shirt"),
-                            SizedBox(
-                              height: 5,
+                            Text(
+                              "Male",
+                              style: TextStyle(fontSize: 18),
                             ),
-                            Text("Short"),
                             SizedBox(
-                              height: 5,
+                              height: 10,
                             ),
-                            Text("Shoes"),
-                            SizedBox(
-                              height: 5,
+                            Text(
+                              "Female",
+                              style: TextStyle(fontSize: 18),
                             ),
-                            Text("Equipment"),
                             SizedBox(
-                              height: 5,
+                              height: 10,
+                            ),
+                            Text(
+                              "Unisex",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            SizedBox(
+                              height: 10,
                             ),
                           ],
                         ),

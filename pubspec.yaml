@@ -96,6 +96,7 @@ flutter:
     - assets/icon_images/allProduct.png
     - assets/icon_images/equipment.png
     - assets/icon_images/allNew.png
+    - assets/icon_images/phoneIcon.png
     - assets/icon_images/shirt.png
     - assets/icon_images/short.png
     - assets/icon_images/shoes.png

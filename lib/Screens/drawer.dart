@@ -36,7 +36,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               size: 45,
             ),
             SizedBox(
-              width: 15,
+              width: 5,
             ),
             Text(
               "Guess",
@@ -68,7 +68,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 size: 45,
               ),
               const SizedBox(
-                width: 15,
+                width: 5,
               ),
               FutureBuilder(
                   future: _fetch(),
@@ -149,18 +149,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 child: ListView(
                   children: [
                     const DrawerExpandable(
-                      cateName: "Men",
+                      cateName: "Product",
                       // ignore: deprecated_member_use
-                      cateIcon: 'assets/icon_images/men.png',
-                    ),
-                    const DrawerExpandable(
-                      cateName: "Women",
-                      // ignore: deprecated_member_use
-                      cateIcon: 'assets/icon_images/women.png',
-                    ),
-                    const DrawerExpandable(
-                      cateName: "Kid",
-                      cateIcon: 'assets/icon_images/kid.png',
+                      cateIcon: 'assets/icon_images/allProduct.png',
                     ),
                     Container(
                       margin:
