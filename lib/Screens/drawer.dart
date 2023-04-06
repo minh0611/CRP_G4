@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_authfb_demo/Screens/aboutUs.dart';
 import 'package:flutter_authfb_demo/widgets/drawer_expandable.dart';
-import 'package:flutter_authfb_demo/widgets/dropdown_cate.dart';
 import 'package:flutter_authfb_demo/Screens/signin.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -84,7 +83,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         const FaIcon(
                           FontAwesomeIcons.solidCircleUser,
                           color: Colors.grey,
-                          size: 30,
+                          size: 45,
                         ),
                         const SizedBox(
                           width: 15,
@@ -100,7 +99,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                   " $uFullname",
                                   style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 15,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                 );
                               }

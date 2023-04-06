@@ -132,6 +132,23 @@ class ProductDetailScreen extends StatelessWidget {
                   height: 16,
                 ),
                 const Text(
+                  "Product Type",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text(
+                  productModel.product_type,
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                const Text(
                   "Product Description",
                   style: TextStyle(
                       color: Colors.white,
