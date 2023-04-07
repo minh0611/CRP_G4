@@ -310,14 +310,17 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.amber,
-                        foregroundColor: Colors.blue,
-                        disabledForegroundColor: Colors.red.withOpacity(0.38),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.black, width: 1)),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          disabledForegroundColor: Colors.black,
+                        ),
+                        onPressed: null,
+                        child: const Text('Add to cart'),
                       ),
-                      onPressed: null,
-                      child: const Text('Add to cart'),
                     ),
                     Text('Sold: ${resultList[index].product_sales}'),
                   ],

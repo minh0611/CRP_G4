@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_authfb_demo/Screens/newDetail.dart';
 import 'package:flutter_authfb_demo/Screens/productDetail.dart';
 import 'package:flutter_authfb_demo/models/new_model.dart';
+import 'package:flutter_authfb_demo/widgets/banner_home.dart';
 import 'package:flutter_authfb_demo/widgets/new_container.dart';
 
 import '../models/product_model.dart';
@@ -17,11 +18,11 @@ class HomeBodyScreen extends StatefulWidget {
 }
 
 class _HomeBodyScreenState extends State<HomeBodyScreen> {
-  final List<String> imgList = [
-    'assets/images/banner.jpeg',
-    'assets/images/banner2.jpeg',
-    'assets/images/banner4.jpeg',
-  ];
+  // final List<String> imgList = [
+  //   'assets/images/banner.jpeg',
+  //   'assets/images/banner2.jpeg',
+  //   'assets/images/banner4.jpeg',
+  // ];
   List<ProductModel> productList = [];
   List<ProductModel> bestProductList = [];
   List<NewModel> newList = [];
@@ -97,23 +98,24 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
           Expanded(
               child: ListView(
             children: [
-              CarouselSlider(
-                items: imgList
-                    .map((item) => Center(
-                          child: Image.asset(
-                            item,
-                            fit: BoxFit.cover,
-                            width: 1000,
-                          ),
-                        ))
-                    .toList(),
-                options: CarouselOptions(
-                  autoPlay: true,
-                  aspectRatio: 2.0,
-                  enlargeCenterPage: true,
-                  autoPlayInterval: const Duration(seconds: 5),
-                ),
-              ),
+              // CarouselSlider(
+              //   items: imgList
+              //       .map((item) => Center(
+              //             child: Image.asset(
+              //               item,
+              //               fit: BoxFit.cover,
+              //               width: 1000,
+              //             ),
+              //           ))
+              //       .toList(),
+              //   options: CarouselOptions(
+              //     autoPlay: true,
+              //     aspectRatio: 2.0,
+              //     enlargeCenterPage: true,
+              //     autoPlayInterval: const Duration(seconds: 5),
+              //   ),
+              // ),
+              const BannerHome(),
               const Center(
                 child: Text(
                   "Top Sales ",
@@ -244,14 +246,17 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.amber,
-                        foregroundColor: Colors.blue,
-                        disabledForegroundColor: Colors.red.withOpacity(0.38),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.black, width: 1)),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          disabledForegroundColor: Colors.black,
+                        ),
+                        onPressed: null,
+                        child: const Text('Add to cart'),
                       ),
-                      onPressed: null,
-                      child: const Text('Add to cart'),
                     ),
                     Text('Sold: ${bestProductList[index].product_sales}'),
                   ],
