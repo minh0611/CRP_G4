@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable/expandable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_authfb_demo/Screens/newDetail.dart';
 import 'package:flutter_authfb_demo/Screens/productDetail.dart';
@@ -150,7 +151,7 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
                 ),
               ),
               Container(
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height + 40,
                   child: GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       gridDelegate:

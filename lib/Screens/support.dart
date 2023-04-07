@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_authfb_demo/widgets/aboutUsExpandable.dart';
 import 'package:flutter_authfb_demo/widgets/category_icon.dart';
@@ -11,15 +12,21 @@ class SupportScreen extends StatefulWidget {
 }
 
 class _SupportScreenState extends State<SupportScreen> {
-  _launchCaller() async {
-    var url = Uri.parse("tel://0862179527");
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
+  var command = "tel://+(84)862179527";
+
+// Also, try using Future in place of void
+  Future<void> customLaunch(command) async {
+    // ignore: deprecated_member_use
+    if (await canLaunch(command)) {
+      // ignore: deprecated_member_use
+      await launch(command);
     } else {
-      throw 'Could not launch $url';
+      print(' could not launch $command');
     }
   }
 
+  final Stream<QuerySnapshot> _supportStream =
+      FirebaseFirestore.instance.collection('support').snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,33 +46,38 @@ class _SupportScreenState extends State<SupportScreen> {
               const SizedBox(
                 height: 15,
               ),
-              const AboutUsExpandable(
-                  infoTitle: "Question 1",
-                  infoIcon: Icons.question_mark_rounded,
-                  infoContent: "Answer 1"),
-              const SizedBox(
-                height: 15,
-              ),
-              const AboutUsExpandable(
-                  infoTitle: "Question 2",
-                  infoIcon: Icons.question_mark_rounded,
-                  infoContent: "Answer 2"),
-              const SizedBox(
-                height: 15,
-              ),
-              const AboutUsExpandable(
-                  infoTitle: "Question 3",
-                  infoIcon: Icons.question_mark_rounded,
-                  infoContent: "Answer 3"),
-              const SizedBox(
-                height: 15,
-              ),
-              const AboutUsExpandable(
-                  infoTitle: "Question 4",
-                  infoIcon: Icons.question_mark_rounded,
-                  infoContent: "Answer 4"),
+              StreamBuilder<QuerySnapshot>(
+                  stream: _supportStream,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Something went wrong');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text("Loading");
+                    }
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (_, index) {
+                          DocumentSnapshot _documentSnapshot =
+                              snapshot.data!.docs[index];
+                          return Column(
+                            children: [
+                              AboutUsExpandable(
+                                  infoTitle: _documentSnapshot['sp_title'],
+                                  infoIcon: Icons.question_mark_rounded,
+                                  infoContent: _documentSnapshot['sp_content']),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          );
+                        });
+                  }),
               InkWell(
-                onTap: () => _launchCaller(),
+                onTap: () => customLaunch(command),
                 child: const CategoryIcon(
                     iconImage: 'assets/icon_images/phoneIcon.png',
                     categoryName: "Call Support"),
