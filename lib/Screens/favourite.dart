@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_authfb_demo/widgets/cart_product.dart';
 import 'package:flutter_authfb_demo/widgets/checkbox.dart';
+import 'package:flutter_authfb_demo/widgets/favourite_product.dart';
 import 'package:flutter_authfb_demo/widgets/increment_decrement_form.dart';
 
 class FavouriteScreen extends StatefulWidget {
@@ -28,35 +28,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                 Text("Select all"),
               ],
             ),
-            Expanded(
-              child: ListView(
-                children: const [
-                  ProductCart(
-                      image: "assets/productImages/product1.jpeg",
-                      productName: "Air Force 1",
-                      productPrice: "14"),
-                  ProductCart(
-                      image: "assets/productImages/product1.jpeg",
-                      productName: "Air Force 1",
-                      productPrice: "14"),
-                  ProductCart(
-                      image: "assets/productImages/product1.jpeg",
-                      productName: "Air Force 1",
-                      productPrice: "14"),
-                  ProductCart(
-                      image: "assets/productImages/product1.jpeg",
-                      productName: "Air Force 1",
-                      productPrice: "14"),
-                  ProductCart(
-                      image: "assets/productImages/product1.jpeg",
-                      productName: "Air Force 1",
-                      productPrice: "14"),
-                  ProductCart(
-                      image: "assets/productImages/product1.jpeg",
-                      productName: "Air Force 1",
-                      productPrice: "14"),
-                ],
-              ),
+            const Expanded(
+              child: FavouriteProduct(),
             ),
             SizedBox(
               height: 60,
@@ -82,10 +55,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                           fontSize: 18,
                         ),
                       ),
-                    ),
-                    const Icon(
-                      Icons.delete_sweep_rounded,
-                      size: 40,
                     ),
                   ],
                 ),

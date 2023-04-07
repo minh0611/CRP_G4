@@ -1,15 +1,54 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_authfb_demo/models/product_model.dart';
 import 'package:flutter_authfb_demo/utils/color_utils.dart';
 import 'package:flutter_authfb_demo/widgets/increment_decrement_form.dart';
 import 'package:flutter_authfb_demo/widgets/size_choice.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key, required this.productModel});
 
   final ProductModel productModel;
-  Future addProductCart() async {}
-  Future addProductFavourite() async {}
+
+  @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  Future addProductCart() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    var currentUser = _auth.currentUser;
+    CollectionReference _collectionRef =
+        FirebaseFirestore.instance.collection("users-cart-item");
+    return _collectionRef
+        .doc(currentUser!.email)
+        .collection("items")
+        .doc()
+        .set({
+      "name": widget.productModel.product_name,
+      "price": widget.productModel.product_price,
+      "image": widget.productModel.product_img
+    }).then((value) => print("Add To Cart Successfully"));
+  }
+
+  Future addProductFavourite() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    var currentUser = _auth.currentUser;
+    CollectionReference _collectionRef =
+        FirebaseFirestore.instance.collection("users-favourite-item");
+    return _collectionRef
+        .doc(currentUser!.email)
+        .collection("items")
+        .doc()
+        .set({
+      "name": widget.productModel.product_name,
+      "price": widget.productModel.product_price,
+      "image": widget.productModel.product_img
+    }).then((value) => print("Add To Favourite Successfully"));
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -26,34 +65,52 @@ class ProductDetailScreen extends StatelessWidget {
               image: DecorationImage(
                 fit: BoxFit.contain,
                 image: NetworkImage(
-                  productModel.product_img,
+                  widget.productModel.product_img,
                 ),
               ),
             ),
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      size: 30,
-                    ),
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('users-favourite-item')
+                  .doc(FirebaseAuth.instance.currentUser!.email)
+                  .collection('items')
+                  .where("name", isEqualTo: widget.productModel.product_name)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.data == null) {
+                  return Text("");
+                }
+                return Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(
+                          Icons.arrow_back,
+                          size: 30,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => snapshot.data?.docs.length == 0
+                            ? addProductFavourite()
+                            : print("Already Added"),
+                        child: snapshot.data?.docs.length == 0
+                            ? const Icon(
+                                Icons.favorite_outline,
+                                size: 30,
+                              )
+                            : const Icon(Icons.favorite, size: 30),
+                      )
+                    ],
                   ),
-                  const InkWell(
-                    onTap: null,
-                    child: Icon(
-                      Icons.favorite_outline,
-                      size: 30,
-                    ),
-                  )
-                ],
-              ),
+                );
+              },
             ),
           )),
       bottomSheet: Container(
@@ -92,14 +149,14 @@ class ProductDetailScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      productModel.product_name,
+                      widget.productModel.product_name,
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 25,
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      '\$ ${productModel.product_price}',
+                      '\$ ${widget.productModel.product_price}',
                       style: TextStyle(
                           color: hexStringColor("8776ff"),
                           fontSize: 25,
@@ -142,7 +199,7 @@ class ProductDetailScreen extends StatelessWidget {
                   height: 16,
                 ),
                 Text(
-                  productModel.product_type,
+                  widget.productModel.product_type,
                   style: const TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 const SizedBox(
@@ -159,7 +216,7 @@ class ProductDetailScreen extends StatelessWidget {
                   height: 16,
                 ),
                 Text(
-                  productModel.product_des,
+                  widget.productModel.product_des,
                   style: const TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 const SizedBox(
@@ -183,7 +240,8 @@ class ProductDetailScreen extends StatelessWidget {
                         ),
                         child: const InreDecrForm()),
                     ElevatedButton(
-                        onPressed: () {}, child: const Text('Add to Cart'))
+                        onPressed: () => addProductCart(),
+                        child: const Text('Add to Cart'))
                   ],
                 ),
               ],

@@ -4,21 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_authfb_demo/widgets/checkbox.dart';
 import 'package:flutter_authfb_demo/widgets/increment_decrement_form.dart';
 
-class ProductCart extends StatefulWidget {
-  const ProductCart({
-    super.key,
-  });
+class FavouriteProduct extends StatefulWidget {
+  const FavouriteProduct({super.key});
 
   @override
-  State<ProductCart> createState() => _ProductCartState();
+  State<FavouriteProduct> createState() => _FavouriteProductState();
 }
 
-class _ProductCartState extends State<ProductCart> {
+class _FavouriteProductState extends State<FavouriteProduct> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection("users-cart-item")
+            .collection("users-favourite-item")
             .doc(FirebaseAuth.instance.currentUser!.email)
             .collection("items")
             .snapshots(),
@@ -82,7 +80,8 @@ class _ProductCartState extends State<ProductCart> {
                                         InkWell(
                                           onTap: () {
                                             FirebaseFirestore.instance
-                                                .collection("users-cart-item")
+                                                .collection(
+                                                    "users-favourite-item")
                                                 .doc(FirebaseAuth.instance
                                                     .currentUser!.email)
                                                 .collection('items')

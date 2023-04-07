@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_collection_literals, deprecated_member_use
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_authfb_demo/Screens/productDetail.dart';
 import 'package:flutter_authfb_demo/models/product_model.dart';
@@ -18,6 +19,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
   late Future reloadResult;
   List<ProductModel> productList = [];
   List<ProductModel> resultList = [];
+  List<ProductModel> favoriteList = [];
   @override
   void initState() {
     super.initState();

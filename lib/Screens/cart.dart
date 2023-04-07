@@ -29,32 +29,7 @@ class _CartScreenState extends State<CartScreen> {
                 Text("Select all"),
               ],
             ),
-            Expanded(
-              child: ListView(
-                children: const [
-                  ProductCart(
-                      image: "assets/productImages/product1.jpeg",
-                      productName: "Air Force 1",
-                      productPrice: "14"),
-                  ProductCart(
-                      image: "assets/productImages/product1.jpeg",
-                      productName: "Air Force 1",
-                      productPrice: "14"),
-                  ProductCart(
-                      image: "assets/productImages/product1.jpeg",
-                      productName: "Air Force 1",
-                      productPrice: "14"),
-                  ProductCart(
-                      image: "assets/productImages/product1.jpeg",
-                      productName: "Air Force 1",
-                      productPrice: "14"),
-                  ProductCart(
-                      image: "assets/productImages/product1.jpeg",
-                      productName: "Air Force 1",
-                      productPrice: "14"),
-                ],
-              ),
-            ),
+            const Expanded(child: ProductCart()),
             SizedBox(
               height: 60,
               child: Container(
@@ -79,10 +54,6 @@ class _CartScreenState extends State<CartScreen> {
                           fontSize: 18,
                         ),
                       ),
-                    ),
-                    const Icon(
-                      Icons.delete_sweep_rounded,
-                      size: 40,
                     ),
                   ],
                 ),
