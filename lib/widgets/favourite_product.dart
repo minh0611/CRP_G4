@@ -67,9 +67,6 @@ class _FavouriteProductState extends State<FavouriteProduct> {
                                       "\$ ${_documentSnapshot['price']}",
                                       style: const TextStyle(fontSize: 18),
                                     ),
-                                    const SizedBox(
-                                      height: 2,
-                                    ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -83,7 +80,7 @@ class _FavouriteProductState extends State<FavouriteProduct> {
                                                 .collection(
                                                     "users-favourite-item")
                                                 .doc(FirebaseAuth.instance
-                                                    .currentUser!.email)
+                                                    .currentUser?.email)
                                                 .collection('items')
                                                 .doc(_documentSnapshot.id)
                                                 .delete();

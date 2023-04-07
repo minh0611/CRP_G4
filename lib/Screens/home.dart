@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
           preferredSize: const Size.fromHeight(100),
           child: Container(
             color: const Color.fromARGB(224, 15, 28, 70),
-            padding: const EdgeInsets.only(left: 15),
+            padding: const EdgeInsets.only(left: 15, top: 25),
             child: Row(
               children: [
                 Builder(
@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       fontWeight: FontWeight.bold),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(80, 15, 15, 15),
+                  padding: const EdgeInsets.fromLTRB(70, 15, 11, 15),
                   child: InkWell(
                     child: const Icon(
                       Icons.favorite_outline,

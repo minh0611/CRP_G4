@@ -69,9 +69,6 @@ class _ProductCartState extends State<ProductCart> {
                                       "\$ ${_documentSnapshot['price']}",
                                       style: const TextStyle(fontSize: 18),
                                     ),
-                                    const SizedBox(
-                                      height: 2,
-                                    ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -84,7 +81,7 @@ class _ProductCartState extends State<ProductCart> {
                                             FirebaseFirestore.instance
                                                 .collection("users-cart-item")
                                                 .doc(FirebaseAuth.instance
-                                                    .currentUser!.email)
+                                                    .currentUser?.email)
                                                 .collection('items')
                                                 .doc(_documentSnapshot.id)
                                                 .delete();

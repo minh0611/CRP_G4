@@ -56,7 +56,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(425),
           child: Container(
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.fromLTRB(15, 20, 20, 15),
             width: MediaQuery.of(context).size.width,
             height: size.height / 2,
             // ignore: prefer_const_constructors
