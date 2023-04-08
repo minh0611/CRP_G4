@@ -39,7 +39,7 @@ class _ProductCartState extends State<ProductCart> {
                     const CustomCheckBox(),
                     Expanded(
                       child: Container(
-                        height: 110,
+                        height: 130,
                         color: Colors.yellow[200],
                         child: Row(
                           children: [
@@ -56,45 +56,49 @@ class _ProductCartState extends State<ProductCart> {
                             Flexible(
                               flex: 2,
                               fit: FlexFit.tight,
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      _documentSnapshot['name'],
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      "\$ ${_documentSnapshot['price']}",
-                                      style: const TextStyle(fontSize: 18),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const InreDecrForm(),
-                                        InkWell(
-                                          onTap: () {
-                                            FirebaseFirestore.instance
-                                                .collection("users-cart-item")
-                                                .doc(FirebaseAuth.instance
-                                                    .currentUser?.email)
-                                                .collection('items')
-                                                .doc(_documentSnapshot.id)
-                                                .delete();
-                                          },
-                                          child: const Icon(
-                                            Icons.delete_sweep_rounded,
-                                            size: 40,
-                                          ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    _documentSnapshot['name'],
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  Text("Size: ${_documentSnapshot['size']}",
+                                      style: const TextStyle(fontSize: 15)),
+                                  Text(
+                                    "\$ ${_documentSnapshot['price']}",
+                                    style: const TextStyle(fontSize: 15),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                          "Amount added: ${_documentSnapshot['amountProduct']}"),
+                                      InkWell(
+                                        onTap: () {
+                                          FirebaseFirestore.instance
+                                              .collection("users-cart-item")
+                                              .doc(FirebaseAuth
+                                                  .instance.currentUser?.email)
+                                              .collection('items')
+                                              .doc(_documentSnapshot.id)
+                                              .delete();
+                                        },
+                                        child: const Icon(
+                                          Icons.delete_sweep_rounded,
+                                          size: 40,
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                           ],

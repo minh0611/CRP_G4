@@ -312,18 +312,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.black, width: 1)),
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          disabledForegroundColor: Colors.black,
-                        ),
-                        onPressed: null,
-                        child: const Text('Add to cart'),
-                      ),
-                    ),
+                    Text('In Stock: ${resultList[index].product_available}'),
                     Text('Sold: ${resultList[index].product_sales}'),
                   ],
                 ),

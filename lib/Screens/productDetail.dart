@@ -7,6 +7,12 @@ import 'package:flutter_authfb_demo/utils/color_utils.dart';
 import 'package:flutter_authfb_demo/widgets/increment_decrement_form.dart';
 import 'package:flutter_authfb_demo/widgets/size_choice.dart';
 
+class Data {
+  String label;
+
+  Data(this.label);
+}
+
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key, required this.productModel});
 
@@ -29,7 +35,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         .set({
       "name": widget.productModel.product_name,
       "price": widget.productModel.product_price,
-      "image": widget.productModel.product_img
+      "image": widget.productModel.product_img,
+      "size": _choiceChipsList[_selectedIndex].label,
+      "amountProduct": dropdownvalue.toInt(),
     }).then((value) => print("Add To Cart Successfully"));
   }
 
@@ -45,11 +53,32 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         .set({
       "name": widget.productModel.product_name,
       "price": widget.productModel.product_price,
-      "image": widget.productModel.product_img
+      "image": widget.productModel.product_img,
     }).then((value) => print("Add To Favourite Successfully"));
   }
 
+  late int _selectedIndex;
+  final List<Data> _choiceChipsList = [
+    Data("S"),
+    Data("M"),
+    Data("L"),
+    Data("XL"),
+  ];
+  int dropdownvalue = 1;
+
+  var items = [
+    1,
+    2,
+    3,
+    4,
+  ];
+  int? newValue;
   @override
+  void initState() {
+    _selectedIndex = 0;
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -148,19 +177,25 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      widget.productModel.product_name,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
+                    Flexible(
+                      flex: 3,
+                      child: Text(
+                        widget.productModel.product_name,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    Text(
-                      '\$ ${widget.productModel.product_price}',
-                      style: TextStyle(
-                          color: hexStringColor("8776ff"),
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
+                    Flexible(
+                      flex: 1,
+                      child: Text(
+                        '\$ ${widget.productModel.product_price}',
+                        style: TextStyle(
+                            color: hexStringColor("8776ff"),
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),
@@ -177,13 +212,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 const SizedBox(
                   height: 16,
                 ),
-                Row(
-                  children: const [
-                    SizeChoiceContainer(size: "S"),
-                    SizeChoiceContainer(size: "M"),
-                    SizeChoiceContainer(size: "L"),
-                    SizeChoiceContainer(size: "XL"),
-                  ],
+                Wrap(
+                  spacing: 6,
+                  direction: Axis.horizontal,
+                  children: choiceChips(),
                 ),
                 const SizedBox(
                   height: 16,
@@ -222,23 +254,56 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 const SizedBox(
                   height: 16,
                 ),
+                const Text(
+                  "Product Available",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text(
+                  '${widget.productModel.product_available} left in stock',
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                        padding: const EdgeInsets.only(right: 10, left: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          gradient: LinearGradient(
-                              colors: [
-                                hexStringColor("ffffff"),
-                                hexStringColor("7478d1"),
-                                hexStringColor("7478d1"),
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("Amount product",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold)),
+                        DropdownButton(
+                          dropdownColor: const Color.fromARGB(224, 15, 28, 70),
+                          value: dropdownvalue,
+                          icon: const Icon(Icons.keyboard_arrow_down),
+                          items: items.map((int items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(
+                                '$items',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              dropdownvalue = newValue!;
+                              print(dropdownvalue);
+                            });
+                          },
                         ),
-                        child: const InreDecrForm()),
+                      ],
+                    ),
                     ElevatedButton(
                         onPressed: () => addProductCart(),
                         child: const Text('Add to Cart'))
@@ -250,5 +315,29 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         ),
       ),
     );
+  }
+
+  List<Widget> choiceChips() {
+    List<Widget> chips = [];
+    for (int i = 0; i < _choiceChipsList.length; i++) {
+      Widget item = Padding(
+        padding: const EdgeInsets.only(left: 10, right: 5),
+        child: ChoiceChip(
+          backgroundColor: Colors.blue,
+          label: Text(_choiceChipsList[i].label),
+          labelStyle: const TextStyle(color: Colors.white),
+          selected: _selectedIndex == i,
+          selectedColor: Colors.black,
+          onSelected: (bool value) {
+            setState(() {
+              _selectedIndex = i;
+            });
+          },
+        ),
+      );
+      chips.add(item);
+      print(_choiceChipsList[_selectedIndex].label);
+    }
+    return chips;
   }
 }

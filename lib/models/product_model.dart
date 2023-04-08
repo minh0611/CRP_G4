@@ -17,6 +17,8 @@ class ProductModel {
 
   final String product_gender;
 
+  final int product_available;
+
   ProductModel({
     required this.product_brand,
     required this.product_img,
@@ -26,6 +28,7 @@ class ProductModel {
     required this.product_sales,
     required this.product_type,
     required this.product_gender,
+    required this.product_available,
   });
 
   Map<String, dynamic> toMap() {
@@ -39,6 +42,7 @@ class ProductModel {
     result.addAll({'product_sales': product_sales});
     result.addAll({'product_sales': product_type});
     result.addAll({'product_gender': product_gender});
+    result.addAll({'product_available': product_available});
 
     return result;
   }
@@ -53,6 +57,7 @@ class ProductModel {
       product_sales: map['product_sales'] ?? '',
       product_type: map['product_type'] ?? '',
       product_gender: map['product_gender'] ?? '',
+      product_available: map['product_available'] ?? '',
     );
   }
   String toJson() => json.encode(toMap());
