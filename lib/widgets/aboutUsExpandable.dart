@@ -43,7 +43,7 @@ class _AboutUsExpandableState extends State<AboutUsExpandable> {
                       ),
                       Text(
                         widget.infoTitle,
-                        style: const TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ],
                   )),

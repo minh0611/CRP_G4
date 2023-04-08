@@ -68,7 +68,9 @@ class _SupportScreenState extends State<SupportScreen> {
                               AboutUsExpandable(
                                   infoTitle: _documentSnapshot['sp_title'],
                                   infoIcon: Icons.question_mark_rounded,
-                                  infoContent: _documentSnapshot['sp_content']),
+                                  infoContent: _documentSnapshot['sp_content']
+                                      .toString()
+                                      .replaceAll("\\n", "\n")),
                               const SizedBox(
                                 height: 15,
                               ),

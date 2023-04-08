@@ -44,7 +44,9 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                           AboutUsExpandable(
                               infoTitle: _documentSnapshot['au_title'],
                               infoIcon: Icons.question_mark,
-                              infoContent: _documentSnapshot['au_content']),
+                              infoContent: _documentSnapshot['au_content']
+                                  .toString()
+                                  .replaceAll("\\n", "\n")),
                           const SizedBox(
                             height: 10,
                           ),
