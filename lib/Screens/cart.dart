@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_authfb_demo/Screens/payment_confirmed.dart';
 import 'package:flutter_authfb_demo/widgets/cart_product.dart';
 import 'package:flutter_authfb_demo/widgets/checkbox.dart';
 import 'package:flutter_authfb_demo/widgets/increment_decrement_form.dart';
@@ -32,30 +33,28 @@ class _CartScreenState extends State<CartScreen> {
             const Expanded(child: ProductCart()),
             SizedBox(
               height: 60,
-              child: Container(
-                margin: const EdgeInsets.only(top: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  // crossAxisAlignment: CrossAxisAlignment.baseline,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: const Color.fromARGB(224, 15, 28, 70),
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color.fromARGB(224, 15, 28, 70)),
-                      child: const Text(
-                        "Proceed Payment",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
+              child: InkWell(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PaymentConfirmedScreen())),
+                child: Container(
+                  margin: const EdgeInsets.only(top: 15),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1,
+                        color: const Color.fromARGB(224, 15, 28, 70),
                       ),
+                      borderRadius: BorderRadius.circular(20),
+                      color: const Color.fromARGB(224, 15, 28, 70)),
+                  child: const Text(
+                    "Proceed Payment",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

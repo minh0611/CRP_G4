@@ -49,7 +49,7 @@ class _ProductCartState extends State<ProductCart> {
                               child: Container(
                                 child: Image.network(
                                   _documentSnapshot['image'],
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
