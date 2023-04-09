@@ -151,7 +151,7 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
                 ),
               ),
               Container(
-                  height: MediaQuery.of(context).size.height + 40,
+                  height: MediaQuery.of(context).size.height + 130,
                   child: GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       gridDelegate:

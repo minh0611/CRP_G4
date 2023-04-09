@@ -34,7 +34,7 @@ class _PaymentConfirmedScreenState extends State<PaymentConfirmedScreen> {
         onStepContinue: () {
           bool isLastStep = (currentStep == getSteps().length - 1);
           if (isLastStep) {
-            //Do something with this information
+            print("Submit Order successfuly");
           } else {
             setState(() {
               currentStep += 1;
@@ -64,7 +64,7 @@ class _PaymentConfirmedScreenState extends State<PaymentConfirmedScreen> {
                     return (const Text("Loading... Please wait"));
                   } else {
                     return Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
                           border: Border.all(width: 1, color: Colors.black)),
                       child: Row(
@@ -80,7 +80,11 @@ class _PaymentConfirmedScreenState extends State<PaymentConfirmedScreen> {
             const SizedBox(
               height: 15,
             ),
-            const Text('123'),
+            Container(
+                padding: const EdgeInsets.only(left: 18),
+                decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.black)),
+                child: TextFormField()),
           ],
         ),
       ),
@@ -96,15 +100,35 @@ class _PaymentConfirmedScreenState extends State<PaymentConfirmedScreen> {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return (const Text("Loading... Please wait"));
                   } else {
-                    return Text(uPaymentMethod);
+                    return Container(
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                          border: Border.all(width: 1, color: Colors.black)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("Payment Method chosen: "),
+                          Text(
+                            uPaymentMethod,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    );
                   }
                 }),
+            const SizedBox(
+              height: 15,
+            ),
             InkWell(
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const PayMethodScreen())),
-                child: const Text('Add Payment Method')),
+                child: const Text(
+                  'Add Payment Method',
+                  textAlign: TextAlign.center,
+                )),
           ],
         ),
       ),
@@ -113,12 +137,16 @@ class _PaymentConfirmedScreenState extends State<PaymentConfirmedScreen> {
         isActive: currentStep >= 2,
         title: const Text("Submit Order"),
         content: Column(
-          children: const [
-            Text('Product in cart'),
-            SizedBox(
+          children: [
+            const Text('Product in cart'),
+            const SizedBox(
               height: 15,
             ),
-            Expanded(child: ProductCart()),
+            Container(
+              height: 625,
+              width: MediaQuery.of(context).size.width,
+              child: const Expanded(child: ProductCart()),
+            )
           ],
         ),
       ),
