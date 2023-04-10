@@ -76,7 +76,14 @@ class _ProductCartState extends State<ProductCart> {
                     children: [
                       Text("Amount added: ${element.amountProduct}"),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          // FirebaseFirestore.instance
+                          //     .collection("users-cart-item")
+                          //     .doc(FirebaseAuth.instance.currentUser?.email)
+                          //     .collection('items')
+                          //     .doc()
+                          //     .delete();
+                        },
                         child: const Icon(
                           Icons.delete_sweep_rounded,
                           size: 40,
@@ -98,7 +105,7 @@ class _ProductCartState extends State<ProductCart> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SingleChildScrollView(
       child: Column(
         children: renderCard(),
       ),

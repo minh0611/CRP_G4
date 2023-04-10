@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_authfb_demo/Screens/orderStatus.dart';
 import 'package:flutter_authfb_demo/Screens/pay_method.dart';
+import 'package:flutter_authfb_demo/models/cart_model.dart';
 import 'package:flutter_authfb_demo/widgets/cart_product.dart';
+import 'package:email_otp/email_otp.dart';
 
 class PaymentConfirmedScreen extends StatefulWidget {
   const PaymentConfirmedScreen({super.key});
@@ -15,9 +18,66 @@ class _PaymentConfirmedScreenState extends State<PaymentConfirmedScreen> {
   int currentStep = 0;
   late String uEmail = '';
   late String uPaymentMethod = '';
+  EmailOTP myauth = EmailOTP();
+  List<CartModel> cartList = [];
+  double totalBill = 0;
+
+  var date = DateTime.now();
+  TextEditingController otp = TextEditingController();
 
   deleteItemCart() {
     print("delete items");
+  }
+
+  getCartList() async {
+    var data = await FirebaseFirestore.instance
+        .collection('users-cart-item')
+        .doc(FirebaseAuth.instance.currentUser!.email)
+        .collection('items')
+        .get();
+    setState(() {
+      cartList = data.docs
+          .map(
+            (doc) => CartModel.fromMap(doc.data()),
+          )
+          .toList();
+    });
+    getTotalPrice();
+  }
+
+  getTotalPrice() {
+    double newBill = 0;
+    cartList.forEach((element) {
+      newBill += element.totalPrice;
+    });
+    // print('total: $newBill');
+    setState(() {
+      totalBill = newBill;
+    });
+    print(totalBill);
+  }
+
+  Future addOrderCart() async {
+    var deliveryDate = DateTime(date.day + 3, date.month, date.year);
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    var currentUser = _auth.currentUser;
+    CollectionReference _collectionRef =
+        FirebaseFirestore.instance.collection("order");
+    return _collectionRef
+        .doc(currentUser!.email)
+        .collection("items")
+        .doc()
+        .set({
+      'deliveryTime': deliveryDate,
+      'totalPrice': totalBill,
+      'status': 'WAITING FOR CONFIRM'
+    }).then((value) => print("Add Order Successfully"));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCartList();
   }
 
   @override
@@ -36,10 +96,31 @@ class _PaymentConfirmedScreenState extends State<PaymentConfirmedScreen> {
             : setState(() {
                 currentStep -= 1;
               }),
-        onStepContinue: () {
+        onStepContinue: () async {
           bool isLastStep = (currentStep == getSteps().length - 1);
           if (isLastStep) {
-            print("Submit Order successfuly");
+            addOrderCart();
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return const OrderStatus();
+              },
+            ));
+          } else if (currentStep == getSteps().length - 3) {
+            if (await myauth.verifyOTP(otp: otp.text) == true) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("OTP is verified"),
+              ));
+              setState(() {
+                currentStep += 1;
+                print(totalBill);
+              });
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Invalid OTP"),
+              ));
+              currentStep = currentStep;
+            }
+            print("step 1");
           } else {
             setState(() {
               currentStep += 1;
@@ -79,7 +160,27 @@ class _PaymentConfirmedScreenState extends State<PaymentConfirmedScreen> {
                             uEmail,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          const Text("Send OTP"),
+                          InkWell(
+                              onTap: () async {
+                                myauth.setConfig(
+                                    appEmail: "me@rohitchouhan.com",
+                                    appName: "Email OTP",
+                                    userEmail: uEmail,
+                                    otpLength: 6,
+                                    otpType: OTPType.digitsOnly);
+                                if (await myauth.sendOTP() == true) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text("OTP has been sent"),
+                                  ));
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text("Oops, OTP send failed"),
+                                  ));
+                                }
+                              },
+                              child: const Text("Send OTP")),
                         ],
                       ),
                     );
@@ -92,7 +193,10 @@ class _PaymentConfirmedScreenState extends State<PaymentConfirmedScreen> {
                 padding: const EdgeInsets.only(left: 18),
                 decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Colors.black)),
-                child: TextFormField()),
+                child: TextFormField(
+                  controller: otp,
+                  decoration: const InputDecoration(hintText: 'Enter Otp'),
+                )),
           ],
         ),
       ),

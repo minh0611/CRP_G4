@@ -73,45 +73,46 @@ class _CartScreenState extends State<CartScreen> {
               ],
             ),
             const Expanded(child: ProductCart()),
-          ],
-        ),
-      ),
-      bottomSheet: Container(
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Total Price: \$ ${totalBill.toString()} ",
-              style: const TextStyle(fontSize: 18),
-            ),
-            SizedBox(
-              height: 60,
-              child: InkWell(
-                // onTap: () => getCartList(),
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PaymentConfirmedScreen())),
-                child: Container(
-                  margin: const EdgeInsets.only(top: 15),
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: const Color.fromARGB(224, 15, 28, 70),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Total Price: \$ ${totalBill.toString()} ",
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  SizedBox(
+                    height: 60,
+                    child: InkWell(
+                      // onTap: () => getCartList(),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const PaymentConfirmedScreen())),
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 15),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: const Color.fromARGB(224, 15, 28, 70),
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            color: const Color.fromARGB(224, 15, 28, 70)),
+                        child: const Text(
+                          "Proceed Payment",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(20),
-                      color: const Color.fromARGB(224, 15, 28, 70)),
-                  child: const Text(
-                    "Proceed Payment",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
                     ),
                   ),
-                ),
+                ],
               ),
             ),
           ],

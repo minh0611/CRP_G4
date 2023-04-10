@@ -130,7 +130,7 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 70,
+                  height: 15,
                 ),
                 const Center(
                   child: Text(

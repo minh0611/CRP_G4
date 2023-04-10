@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_authfb_demo/Screens/orderStatus.dart';
 import 'package:flutter_authfb_demo/Screens/pay_method.dart';
 import 'package:flutter_authfb_demo/Screens/personal_info.dart';
 import 'package:flutter_authfb_demo/Screens/support.dart';
@@ -37,6 +38,16 @@ class _HomePersonalScreenState extends State<HomePersonalScreen> {
             },
             title: "Payment Method",
             subIcon: Icons.payment_rounded),
+        CustomerButton(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) {
+                  return const OrderStatus();
+                },
+              ));
+            },
+            title: "Order",
+            subIcon: Icons.fire_truck),
         CustomerButton(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(
