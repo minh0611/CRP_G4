@@ -63,64 +63,57 @@ class _CartScreenState extends State<CartScreen> {
         backgroundColor: const Color.fromARGB(224, 15, 28, 70),
       ),
       body: Container(
-        height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.all(15),
         child: Column(
           children: [
-            Expanded(
-                child: ListView(
-              children: [
-                Row(
-                  children: const [
-                    CustomCheckBox(),
-                    Text("Select all"),
-                  ],
-                ),
-                Container(
-                    color: Colors.white,
-                    height: MediaQuery.of(context).size.height,
-                    child: const ProductCart()),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Total Price: \$ ${totalBill.toString()} ",
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    SizedBox(
-                      height: 60,
-                      child: InkWell(
-                        // onTap: () => getCartList(),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const PaymentConfirmedScreen())),
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 15),
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: const Color.fromARGB(224, 15, 28, 70),
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color.fromARGB(224, 15, 28, 70)),
-                          child: const Text(
-                            "Proceed Payment",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+            Row(
+              children: const [
+                CustomCheckBox(),
+                Text("Select all"),
               ],
-            )),
+            ),
+            const Expanded(child: ProductCart()),
+          ],
+        ),
+      ),
+      bottomSheet: Container(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Total Price: \$ ${totalBill.toString()} ",
+              style: const TextStyle(fontSize: 18),
+            ),
+            SizedBox(
+              height: 60,
+              child: InkWell(
+                // onTap: () => getCartList(),
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PaymentConfirmedScreen())),
+                child: Container(
+                  margin: const EdgeInsets.only(top: 15),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1,
+                        color: const Color.fromARGB(224, 15, 28, 70),
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                      color: const Color.fromARGB(224, 15, 28, 70)),
+                  child: const Text(
+                    "Proceed Payment",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

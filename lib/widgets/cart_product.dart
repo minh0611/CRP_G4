@@ -40,8 +40,7 @@ class _ProductCartState extends State<ProductCart> {
     List<Widget> newList = [];
     for (var element in cartList) {
       Widget items = Container(
-        height: 150,
-        margin: EdgeInsets.only(bottom: 30),
+        margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(border: Border.all(width: 1)),
         child: Row(
           children: [
@@ -99,9 +98,10 @@ class _ProductCartState extends State<ProductCart> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Column(
-      children: renderCard(),
-    ));
+    return Container(
+      child: Column(
+        children: renderCard(),
+      ),
+    );
   }
 }
