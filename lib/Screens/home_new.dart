@@ -24,7 +24,6 @@ class _HomeNewScreenState extends State<HomeNewScreen> {
   }
 
   getNew() async {
-    List<NewModel> showFilter = [];
     var data = await FirebaseFirestore.instance.collection('news').get();
     setState(() {
       newList = data.docs

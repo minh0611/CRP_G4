@@ -47,8 +47,9 @@ class _MyHomePageState extends State<MyHomePage> {
           preferredSize: const Size.fromHeight(100),
           child: Container(
             color: const Color.fromARGB(224, 15, 28, 70),
-            padding: const EdgeInsets.only(left: 15, top: 25),
+            padding: const EdgeInsets.all(20),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Builder(
                   builder: (context) => GestureDetector(
@@ -60,50 +61,57 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.white,
                       )),
                 ),
-                const Padding(
-                    padding: EdgeInsets.fromLTRB(100, 15, 0, 15),
-                    child: Text(
+                Row(
+                  children: const [
+                    Text(
                       "LMSD",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
-                    )),
-                const Text(
-                  "SPORT",
-                  style: TextStyle(
-                      color: Colors.amber,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(70, 15, 11, 15),
-                  child: InkWell(
-                    child: const Icon(
-                      Icons.favorite_outline,
-                      color: Colors.white,
                     ),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) {
-                          return const FavouriteScreen();
-                        },
-                      ));
-                    },
-                  ),
+                    Text(
+                      "SPORT",
+                      style: TextStyle(
+                          color: Colors.amber,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-                InkWell(
-                  child: const Icon(
-                    Icons.shopping_cart_checkout_outlined,
-                    color: Colors.white,
+                SizedBox(
+                  width: 70,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      InkWell(
+                        child: const Icon(
+                          Icons.favorite_outline,
+                          color: Colors.white,
+                        ),
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return const FavouriteScreen();
+                            },
+                          ));
+                        },
+                      ),
+                      InkWell(
+                        child: const Icon(
+                          Icons.shopping_cart_checkout_outlined,
+                          color: Colors.white,
+                        ),
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return const CartScreen();
+                            },
+                          ));
+                        },
+                      ),
+                    ],
                   ),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return const CartScreen();
-                      },
-                    ));
-                  },
                 ),
               ],
             ),

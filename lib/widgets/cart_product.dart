@@ -1,121 +1,107 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_authfb_demo/models/cart_model.dart';
 import 'package:flutter_authfb_demo/widgets/checkbox.dart';
-import 'package:flutter_authfb_demo/widgets/increment_decrement_form.dart';
 
 class ProductCart extends StatefulWidget {
-  const ProductCart({
-    super.key,
-  });
+  const ProductCart({super.key});
 
   @override
   State<ProductCart> createState() => _ProductCartState();
 }
 
 class _ProductCartState extends State<ProductCart> {
+  List<CartModel> cartList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getCart();
+  }
+
+  getCart() async {
+    var data = await FirebaseFirestore.instance
+        .collection('users-cart-item')
+        .doc(FirebaseAuth.instance.currentUser!.email)
+        .collection('items')
+        .get();
+    setState(() {
+      cartList = data.docs
+          .map(
+            (doc) => CartModel.fromMap(doc.data()),
+          )
+          .toList();
+    });
+    print('list: $cartList');
+  }
+
+  List<Widget> renderCard() {
+    List<Widget> newList = [];
+    for (var element in cartList) {
+      Widget items = Container(
+        height: 150,
+        margin: EdgeInsets.only(bottom: 30),
+        decoration: BoxDecoration(border: Border.all(width: 1)),
+        child: Row(
+          children: [
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: Image.network(
+                element.image,
+                fit: BoxFit.contain,
+              ),
+            ),
+            Flexible(
+              flex: 2,
+              fit: FlexFit.tight,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    element.name,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.left,
+                  ),
+                  Text("Size: ${element.size}",
+                      style: const TextStyle(fontSize: 15)),
+                  Text(
+                    "\$ ${element.price}",
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Amount added: ${element.amountProduct}"),
+                      InkWell(
+                        onTap: () {},
+                        child: const Icon(
+                          Icons.delete_sweep_rounded,
+                          size: 40,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+      newList.add(items);
+    }
+
+    return newList.toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Expanded(
-        child: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("users-cart-item")
-                .doc(FirebaseAuth.instance.currentUser!.email)
-                .collection("items")
-                .snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text("Something is wrong... Please wait a moment"),
-                );
-              }
-              return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (_, index) {
-                  DocumentSnapshot _documentSnapshot =
-                      snapshot.data!.docs[index];
-                  return Container(
-                    margin: const EdgeInsets.only(top: 15),
-                    child: Row(
-                      children: [
-                        const CustomCheckBox(),
-                        Expanded(
-                          child: Container(
-                            height: 130,
-                            color: Colors.yellow[200],
-                            child: Row(
-                              children: [
-                                Flexible(
-                                  flex: 1,
-                                  fit: FlexFit.tight,
-                                  child: Container(
-                                    child: Image.network(
-                                      _documentSnapshot['image'],
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                Flexible(
-                                  flex: 2,
-                                  fit: FlexFit.tight,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        _documentSnapshot['name'],
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                      Text("Size: ${_documentSnapshot['size']}",
-                                          style: const TextStyle(fontSize: 15)),
-                                      Text(
-                                        "\$ ${_documentSnapshot['price']}",
-                                        style: const TextStyle(fontSize: 15),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                              "Amount added: ${_documentSnapshot['amountProduct']}"),
-                                          InkWell(
-                                            onTap: () {
-                                              FirebaseFirestore.instance
-                                                  .collection("users-cart-item")
-                                                  .doc(FirebaseAuth.instance
-                                                      .currentUser?.email)
-                                                  .collection('items')
-                                                  .doc(_documentSnapshot.id)
-                                                  .delete();
-                                            },
-                                            child: const Icon(
-                                              Icons.delete_sweep_rounded,
-                                              size: 40,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            }),
-      ),
-    );
+    return Expanded(
+        child: Column(
+      children: renderCard(),
+    ));
   }
 }

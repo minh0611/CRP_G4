@@ -76,7 +76,7 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
     List<NewModel> showFilterNew = [];
     for (var element in newList) {
       var time = element.new_publish_date.toDate();
-      if (time.isAfter(DateTime(2022, 5, 1, 0, 0))) {
+      if (time.isAfter(DateTime(2023, 3, 20, 0, 0))) {
         showFilterNew.add(element);
       }
       setState(() {
@@ -87,82 +87,76 @@ class _HomeBodyScreenState extends State<HomeBodyScreen> {
     }
     setState(() {
       latestNewList = showFilterNew;
+      print(latestNewList);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Expanded(
-              child: ListView(
-            children: [
-              // CarouselSlider(
-              //   items: imgList
-              //       .map((item) => Center(
-              //             child: Image.asset(
-              //               item,
-              //               fit: BoxFit.cover,
-              //               width: 1000,
-              //             ),
-              //           ))
-              //       .toList(),
-              //   options: CarouselOptions(
-              //     autoPlay: true,
-              //     aspectRatio: 2.0,
-              //     enlargeCenterPage: true,
-              //     autoPlayInterval: const Duration(seconds: 5),
-              //   ),
-              // ),
-              const BannerHome(),
-              const Center(
-                child: Text(
-                  "Top Sales ",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
+    final size = MediaQuery.of(context).size;
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Expanded(
+                child: ListView(
+              children: [
+                const BannerHome(),
+                const Center(
+                  child: Text(
+                    "Top Sales ",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height,
-                child: GridView.builder(
-                    // scrollDirection: Axis.horizontal,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: bestProductList.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, childAspectRatio: 0.5),
-                    itemBuilder: (BuildContext context, int index) =>
-                        buildProductCard(context, index)),
-              ),
-              const Center(
-                child: Text(
-                  "Latest New ",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
+                const SizedBox(
+                  height: 15,
+                ),
+                SizedBox(
+                  height: size.height,
+                  child: Expanded(
+                    child: GridView.builder(
+                        // scrollDirection: Axis.horizontal,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: bestProductList.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2, childAspectRatio: 0.5),
+                        itemBuilder: (BuildContext context, int index) =>
+                            buildProductCard(context, index)),
                   ),
                 ),
-              ),
-              Container(
-                  height: MediaQuery.of(context).size.height + 130,
-                  child: GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 1, childAspectRatio: 2.5),
-                      itemCount: latestNewList.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          buildNewCard(context, index)))
-            ],
-          )),
-        ],
+                const SizedBox(
+                  height: 70,
+                ),
+                const Center(
+                  child: Text(
+                    "Latest New ",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                    height: size.height,
+                    child: Expanded(
+                      child: GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 1, childAspectRatio: 2.5),
+                          itemCount: latestNewList.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              buildNewCard(context, index)),
+                    ))
+              ],
+            )),
+          ],
+        ),
       ),
     );
   }

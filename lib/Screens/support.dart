@@ -12,7 +12,7 @@ class SupportScreen extends StatefulWidget {
 }
 
 class _SupportScreenState extends State<SupportScreen> {
-  var command = "tel://+(84)862179527";
+  var command = "tel://0862179527";
 
 // Also, try using Future in place of void
   Future<void> customLaunch(command) async {

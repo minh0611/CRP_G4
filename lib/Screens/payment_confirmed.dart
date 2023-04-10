@@ -15,6 +15,11 @@ class _PaymentConfirmedScreenState extends State<PaymentConfirmedScreen> {
   int currentStep = 0;
   late String uEmail = '';
   late String uPaymentMethod = '';
+
+  deleteItemCart() {
+    print("delete items");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +75,10 @@ class _PaymentConfirmedScreenState extends State<PaymentConfirmedScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(uEmail),
+                          Text(
+                            uEmail,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           const Text("Send OTP"),
                         ],
                       ),
@@ -138,14 +146,17 @@ class _PaymentConfirmedScreenState extends State<PaymentConfirmedScreen> {
         title: const Text("Submit Order"),
         content: Column(
           children: [
-            const Text('Product in cart'),
+            const Text(
+              'Product in cart',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(
               height: 15,
             ),
             Container(
-              height: 625,
+              height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: const Expanded(child: ProductCart()),
+              child: const ProductCart(),
             )
           ],
         ),

@@ -38,6 +38,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       "image": widget.productModel.product_img,
       "size": _choiceChipsList[_selectedIndex].label,
       "amountProduct": dropdownvalue.toInt(),
+      "totalPrice": widget.productModel.product_price * dropdownvalue.toInt(),
     }).then((value) => print("Add To Cart Successfully"));
   }
 
