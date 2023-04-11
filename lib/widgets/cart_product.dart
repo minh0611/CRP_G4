@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -76,14 +78,7 @@ class _ProductCartState extends State<ProductCart> {
                     children: [
                       Text("Amount added: ${element.amountProduct}"),
                       InkWell(
-                        onTap: () {
-                          // FirebaseFirestore.instance
-                          //     .collection("users-cart-item")
-                          //     .doc(FirebaseAuth.instance.currentUser?.email)
-                          //     .collection('items')
-                          //     .doc()
-                          //     .delete();
-                        },
+                        onTap: () => {},
                         child: const Icon(
                           Icons.delete_sweep_rounded,
                           size: 40,

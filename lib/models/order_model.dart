@@ -1,22 +1,24 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class OrderModel {
-  final DateTime deliveryTime;
+  final Timestamp deliveryTime;
 
-  final int totalPrice;
+  final double totalPrice;
 
-  final String reciever;
+  final String status;
 
   OrderModel(
       {required this.deliveryTime,
       required this.totalPrice,
-      required this.reciever});
+      required this.status});
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
     result.addAll({'deliveryTime': deliveryTime});
     result.addAll({'totalPrice': totalPrice});
-    result.addAll({'reciever': reciever});
+    result.addAll({'status': status});
     return result;
   }
 
@@ -24,7 +26,7 @@ class OrderModel {
     return OrderModel(
       deliveryTime: map['deliveryTime'] ?? '',
       totalPrice: map['totalPrice'] ?? '',
-      reciever: map['reciever'] ?? '',
+      status: map['status'] ?? '',
     );
   }
   String toJson() => json.encode(toMap());

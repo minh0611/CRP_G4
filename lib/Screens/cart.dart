@@ -15,6 +15,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   List<CartModel> cartList = [];
+  List<CartModel> resultList = [];
   double totalBill = 0;
 
   getCartList() async {
@@ -45,9 +46,7 @@ class _CartScreenState extends State<CartScreen> {
     // return totalCartBill;
   }
 
-  deleteCartItem() {
-    print("delete item");
-  }
+  deleteProduct() {}
 
   @override
   void initState() {

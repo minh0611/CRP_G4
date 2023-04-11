@@ -148,11 +148,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 height: 500,
                 child: ListView(
                   children: [
-                    const DrawerExpandable(
-                      cateName: "Product",
-                      // ignore: deprecated_member_use
-                      cateIcon: 'assets/icon_images/allProduct.png',
-                    ),
+                    // const DrawerExpandable(
+                    //   cateName: "Product",
+                    //   // ignore: deprecated_member_use
+                    //   cateIcon: 'assets/icon_images/allProduct.png',
+                    // ),
                     Container(
                       margin:
                           const EdgeInsets.only(bottom: 15, left: 15, top: 10),

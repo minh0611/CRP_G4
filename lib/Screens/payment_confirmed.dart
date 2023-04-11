@@ -260,7 +260,7 @@ class _PaymentConfirmedScreenState extends State<PaymentConfirmedScreen> {
             Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: const ProductCart(),
+              child: ProductCart(),
             )
           ],
         ),

@@ -39,7 +39,23 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       "size": _choiceChipsList[_selectedIndex].label,
       "amountProduct": dropdownvalue.toInt(),
       "totalPrice": widget.productModel.product_price * dropdownvalue.toInt(),
-    }).then((value) => print("Add To Cart Successfully"));
+    }).then((value) {
+      // print("Add To Cart Successfully");
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            backgroundColor: Color.fromARGB(224, 15, 28, 70),
+            content: Text('Add product to cart successfully',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold)),
+          );
+        },
+      );
+      Navigator.pop(context);
+    });
   }
 
   Future addProductFavourite() async {
