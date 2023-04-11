@@ -32,7 +32,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               child: FavouriteProduct(),
             ),
             SizedBox(
-              height: 60,
+              height: 70,
               child: Container(
                 margin: const EdgeInsets.only(top: 15),
                 child: Row(
@@ -40,7 +40,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   // crossAxisAlignment: CrossAxisAlignment.baseline,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           border: Border.all(
                             width: 1,

@@ -37,7 +37,7 @@ class _FavouriteProductState extends State<FavouriteProduct> {
                     const CustomCheckBox(),
                     Expanded(
                       child: Container(
-                        height: 110,
+                        height: 120,
                         color: Colors.yellow[200],
                         child: Row(
                           children: [

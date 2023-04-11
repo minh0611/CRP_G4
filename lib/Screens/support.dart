@@ -12,16 +12,12 @@ class SupportScreen extends StatefulWidget {
 }
 
 class _SupportScreenState extends State<SupportScreen> {
-  var command = "tel://0862179527";
-
-// Also, try using Future in place of void
-  Future<void> customLaunch(command) async {
-    // ignore: deprecated_member_use
-    if (await canLaunch(command)) {
-      // ignore: deprecated_member_use
-      await launch(command);
+  _launchCaller() async {
+    const url = "tel:0862179527";
+    if (await canLaunch(url)) {
+      await launch(url);
     } else {
-      print(' could not launch $command');
+      throw 'Could not launch $url';
     }
   }
 
@@ -79,7 +75,8 @@ class _SupportScreenState extends State<SupportScreen> {
                         });
                   }),
               InkWell(
-                onTap: () => customLaunch(command),
+                // ignore: deprecated_member_use
+                onTap: () => _launchCaller(),
                 child: const CategoryIcon(
                     iconImage: 'assets/icon_images/phoneIcon.png',
                     categoryName: "Call Support"),

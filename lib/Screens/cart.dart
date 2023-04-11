@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_authfb_demo/Screens/payment_confirmed.dart';
+import 'package:flutter_authfb_demo/Screens/signin.dart';
 import 'package:flutter_authfb_demo/models/cart_model.dart';
 import 'package:flutter_authfb_demo/widgets/cart_product.dart';
 import 'package:flutter_authfb_demo/widgets/checkbox.dart';
@@ -46,6 +47,43 @@ class _CartScreenState extends State<CartScreen> {
     // return totalCartBill;
   }
 
+  checkUser() {
+    var user = FirebaseAuth.instance.currentUser;
+    if (user!.isAnonymous) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: const Color.fromARGB(224, 15, 28, 70),
+            content: const Text("Need to have an account to continue!!!!",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SignInScreen())),
+                child: const Text('OK',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const PaymentConfirmedScreen()));
+    }
+  }
+
   deleteProduct() {}
 
   @override
@@ -86,11 +124,7 @@ class _CartScreenState extends State<CartScreen> {
                     height: 60,
                     child: InkWell(
                       // onTap: () => getCartList(),
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const PaymentConfirmedScreen())),
+                      onTap: () => checkUser(),
                       child: Container(
                         margin: const EdgeInsets.only(top: 15),
                         padding: const EdgeInsets.all(10),
